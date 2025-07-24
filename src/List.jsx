@@ -10,7 +10,7 @@ export const WaitlistAdminView = () => {
     try {
       setLoading(true);
 
-      const apiUrl = `https://apex-waitlist.onrender.com/api/waitlist?page=${page}&limit=10`;
+      const apiUrl = `${process.env.VITE_BASE_URL}/waitlist?page=${page}&limit=10`;
 
       const response = await fetch(apiUrl, {
         headers: {
@@ -63,7 +63,21 @@ export const WaitlistAdminView = () => {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
+      {/* LOGOUT BUTTON */}
+      <div className="flex justify-end mb-4">
+        <button
+          onClick={() => {
+            localStorage.removeItem("isLoggedIn");
+            window.location.reload();
+          }}
+          className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+        >
+          Logout
+        </button>
+      </div>
+
       <h1 className="text-2xl font-bold mb-6">APEX TECH Waitlist</h1>
+
       {loading ? (
         <p className="text-center">Loading waitlist data...</p>
       ) : (
@@ -119,7 +133,7 @@ export const WaitlistAdminView = () => {
             </table>
           </div>
 
-          {/* Pagination Controls */}
+          {/* Pagination */}
           <div className="flex justify-between items-center mt-6">
             <button
               onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
